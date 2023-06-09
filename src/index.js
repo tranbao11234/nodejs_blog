@@ -5,11 +5,15 @@ const handlebars = require('express-handlebars')
 const app = express()
 const port = 3000
 
+const route = require('./routes');
+
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Use to handle data from form
 app.use(express.urlencoded({
 	extended: true
 }));
+// Used to process data from XMLHttpRequest, fetch, axios,...
 app.use(express.json());
 
 // HTTP logger
@@ -22,20 +26,7 @@ app.engine('hbs', handlebars.engine({
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'resources/views'));
 
-app.get('/', (req, res) => {
-	res.render('home')
-})
-
-app.get('/search', (req, res) => {
-	res.render('search')
-})
-
-app.post('/search', (req, res) => {
-	res.send('')
-})
-
-app.get('/news', (req, res) => {
-	res.render('news')
-})
+// Routes init
+route(app);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}`))
